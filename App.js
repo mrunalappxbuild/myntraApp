@@ -1,20 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import StartMyntra from './screens/StartMyntra';
+import Login from './screens/Login';
+
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading"; 
+
+
+
+const Stack = createNativeStackNavigator();
+
 
 export default function App() {
+
+  const [fontsLoaded] = useFonts({
+    "open-sans": require("./assets/fonts/OpenSansRegular.ttf"),
+    "open-sans-bold": require("./assets/fonts/OpenSansBold.ttf"),
+    "open-sans-Extra-bold": require("./assets/fonts/OpenSansExtraBold.ttf"),
+
+  });
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home"
+        component={StartMyntra}
+        options={{ title: 'Welcome' }}
+      />
+      <Stack.Screen name="Login" component={Login} />
+    </Stack.Navigator>
+  </NavigationContainer>
+   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
